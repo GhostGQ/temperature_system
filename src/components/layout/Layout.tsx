@@ -6,7 +6,7 @@ const Layout = () => {
   return (
     <Box>
       <Header />
-      <Box className='w-screen h-screen pt-18 bg-[#91b2ee9f] px-3'>
+      <Box className='w-screen h-screen pt-18 overflow-x-hidden'>
         <Outlet />
       </Box>
     </Box>

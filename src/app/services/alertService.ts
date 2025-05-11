@@ -17,12 +17,38 @@ export const useGetAlerts = () => {
   });
 };
 
+export const useGetAlert = (id: number | null) => {
+  return useQuery({
+    queryKey: ['alert', id],
+    queryFn: ({ queryKey }: { queryKey: [string, number | null] }) => {
+      const [, alertId] = queryKey;
+      return fetchWithBasicAuth(`/alerts/${alertId}`);
+    },
+    enabled: false,
+  });
+}
+
 export const useCreateAlert = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: (data: AlertPost) =>
       fetchWithBasicAuth('/alerts/create', {
+        method: 'POST',
+        body: JSON.stringify(data),
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['alerts'] });
+    },
+  });
+};
+
+export const useUpdateAlert = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (data: AlertPost & { id: number }) =>
+      fetchWithBasicAuth(`/alerts/${data.id}/edit`, {
         method: 'POST',
         body: JSON.stringify(data),
       }),

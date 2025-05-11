@@ -3,8 +3,10 @@ import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
 interface AuthState {
+  name: string | null
   username: string
   password: string
+  setName: (name: string) => void,
   setCredentials: (username: string, password: string) => void
   clearCredentials: () => void
 }
@@ -14,6 +16,8 @@ export const useAuthStore = create<AuthState>()(
     (set) => ({
       username: '',
       password: '',
+      name: '',
+      setName: (name: string) => set({ name }),
       setCredentials: (username, password) => set({ username, password }),
       clearCredentials: () => set({ username: '', password: '' }),
     }),

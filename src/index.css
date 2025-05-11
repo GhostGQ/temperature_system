@@ -1,1 +1,5 @@
 @import 'tailwindcss';
+
+body {
+  @apply bg-[#91b2ee9f];
+}

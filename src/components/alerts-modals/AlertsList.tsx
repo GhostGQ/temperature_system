@@ -6,7 +6,11 @@ import {MdDelete} from 'react-icons/md';
 import {useDisclosure} from '@mantine/hooks';
 import {useState} from 'react';
 
-const AlertsList = () => {
+interface AlertsListProps {
+  setQueryAlertId: (id: number | null) => void;
+}
+
+const AlertsList = ({setQueryAlertId}: AlertsListProps) => {
   const {data: alerts} = useGetAlerts();
   const [alertId, setAlertId] = useState<number | null>(null);
   const deleteAlert = useDeleteAlert();
@@ -26,10 +30,13 @@ const AlertsList = () => {
     <Table.Tr key={element.id}>
       <Table.Td>{element.truck_name}</Table.Td>
       <Table.Td>{element.trailer.name}</Table.Td>
-      <Table.Td>{element.allowed_temperature}F</Table.Td>
+      <Table.Td>{Math.ceil(element.allowed_temperature)}F</Table.Td>
       <Table.Td>
         <div className='flex gap-2'>
-          <button className='cursor-pointer'>
+          <button
+            className='cursor-pointer'
+            onClick={() => setQueryAlertId(element.id)}
+          >
             <AiFillEdit size={24} color='blue' />
           </button>
           <button
@@ -67,17 +74,19 @@ const AlertsList = () => {
       </Modal>
       <h2 className='text-2xl font-semibold '>Alerts</h2>
 
-      <Table withColumnBorders className='h-full'>
-        <Table.Thead>
-          <Table.Tr>
-            <Table.Th>Truck</Table.Th>
-            <Table.Th>Trailer</Table.Th>
-            <Table.Th>Allowed Temp</Table.Th>
-            <Table.Th>Actions</Table.Th>
-          </Table.Tr>
-        </Table.Thead>
-        <Table.Tbody>{rows}</Table.Tbody>
-      </Table>
+      <Box className='overflow-y-auto max-h-[350px]'>
+        <Table withColumnBorders className='h-full'>
+          <Table.Thead>
+            <Table.Tr>
+              <Table.Th>Truck</Table.Th>
+              <Table.Th>Trailer</Table.Th>
+              <Table.Th>Allowed Temp</Table.Th>
+              <Table.Th>Actions</Table.Th>
+            </Table.Tr>
+          </Table.Thead>
+          <Table.Tbody>{rows}</Table.Tbody>
+        </Table>
+      </Box>
     </Box>
   );
 };

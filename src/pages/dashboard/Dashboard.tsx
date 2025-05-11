@@ -1,20 +1,21 @@
-import {Box, Grid} from '@mantine/core';
+import {Grid} from '@mantine/core';
 import AlertCreation from '../../components/alerts-modals/AlertCreation';
 import AlertsList from '../../components/alerts-modals/AlertsList';
+import AlertSettings from '../../components/alerts-modals/AlertSettings';
+import {useState} from 'react';
 
 const Dashboard = () => {
+  const [alertId, setAlertId] = useState<number | null>(null);
   return (
-    <Grid grow gutter='xs' className='w-full h-full'>
+    <Grid grow gutter='xs' className='w-full h-full overflow-x-hidden px-3'>
       <Grid.Col span={4}>
         <AlertCreation />
       </Grid.Col>
-      <Grid.Col span={4}>
-        <Box className='bg-white shadow-lg rounded-lg p-6 w-full flex'>
-          <h2 className='text-2xl font-semibold '>Alert settings</h2>
-        </Box>
+      <Grid.Col span={window.innerWidth > 728 ? 4 : 10}>
+        <AlertSettings alertId={alertId} setAlertId={setAlertId} />
       </Grid.Col>
-      <Grid.Col span={6} className='h-full '>
-        <AlertsList />
+      <Grid.Col span={10} className='h-full mb-3'>
+        <AlertsList setQueryAlertId={setAlertId} />
       </Grid.Col>
     </Grid>
   );

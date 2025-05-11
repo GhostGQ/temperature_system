@@ -32,7 +32,7 @@ export default function TrailersSearchInput({
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
   const filteredTrailers = trailers?.filter(trailer =>
-    trailer.name.toLowerCase().includes(search.toLowerCase())
+    trailer.name.toLowerCase().includes(search)
   );
 
   const visibleTrailers = filteredTrailers?.slice(0, visibleCount);
@@ -43,6 +43,13 @@ export default function TrailersSearchInput({
     setInputValue(selectedTrailer?.name || '');
     combobox.closeDropdown();
   };
+
+  useEffect(() => {
+    if (selectedId) {
+      const selectedTrailer = trailers.find(t => t.id === selectedId);
+      setInputValue(selectedTrailer?.name || '');
+    }
+  }, [selectedId]);
 
   const options =
     visibleTrailers?.length > 0 && !isLoading

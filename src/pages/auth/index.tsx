@@ -11,7 +11,7 @@ interface AuthForm {
 
 const Auth = () => {
   const navigate = useNavigate();
-  const {setCredentials} = useAuthStore();
+  const {setCredentials, setName} = useAuthStore();
   const {
     register,
     handleSubmit,
@@ -27,8 +27,11 @@ const Auth = () => {
 
   const onSubmit = async (formData: AuthForm) => {
     setCredentials(formData.username, formData.password);
-    refetch().then(() => {
-      navigate('/');
+    refetch().then((response: any) => {
+      navigate('/alerts');
+      if (response?.data?.name) {
+        setName(response.data.name);
+      }
     });
   };
 
