@@ -19,7 +19,7 @@ export const useAuthStore = create<AuthState>()(
       name: '',
       setName: (name: string) => set({ name }),
       setCredentials: (username, password) => set({ username, password }),
-      clearCredentials: () => set({ username: '', password: '' }),
+      clearCredentials: () => set({ username: '', password: '', name: null }),
     }),
     {
       name: 'auth-storage',

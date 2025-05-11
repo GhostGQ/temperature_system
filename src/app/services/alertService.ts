@@ -10,6 +10,13 @@ export interface AlertPost {
   truck_name: string;
 }
 
+export const useGetAlertsInfo = () => {
+  return useQuery({
+    queryKey: ['alertInfo'],
+    queryFn: () => fetchWithBasicAuth('/dash'),
+  })
+}
+
 export const useGetAlerts = () => {
   return useQuery({
     queryKey: ['alerts'],

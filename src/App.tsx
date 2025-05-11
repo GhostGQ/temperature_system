@@ -1,31 +1,35 @@
 import {createBrowserRouter, RouterProvider} from 'react-router-dom';
 import Auth from './pages/auth/index';
 import Layout from './components/layout/Layout';
-import Dashboard from './pages/dashboard/Dashboard';
+import Alerts from './pages/alerts/Alerts';
 import PrivateRoutes from './shared/lib/private-routes/PrivateRoutes';
+import Dashboard from './pages/dashboard/Dashboard';
+import AlertInfo from './pages/alerts/AlertInfo';
 
 const router = createBrowserRouter([
   {
-    path: '/login',
+    path: '/',
     element: <Layout />,
     children: [
       {
         index: true,
+        element: <Dashboard />,
+      },
+      {
+        path: '/alerts/:truckName',
+        element: <AlertInfo />,
+      },
+      {
+        path: '/login',
         element: <Auth />,
       },
-    ],
-  },
-  {
-    path: '/',
-    element: <PrivateRoutes />,
-    children: [
       {
-        path: '/',
-        element: <Layout />,
+        path: '/alerts',
+        element: <PrivateRoutes />,
         children: [
           {
-            path: '/alerts',
-            element: <Dashboard />,
+            index: true,
+            element: <Alerts />,
           },
         ],
       },
