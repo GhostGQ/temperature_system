@@ -12,6 +12,7 @@ import type {UseFormRegister} from 'react-hook-form';
 import type {AlertPost} from '../../app/services/alertService';
 
 interface Props {
+  disabled: boolean
   trailers: Trailer[];
   isLoading: boolean;
   search: string;
@@ -25,6 +26,7 @@ interface Props {
 const PAGE_SIZE = 20;
 
 export default function TrailersSearchInput({
+  disabled,
   trailers,
   isLoading,
   search,
@@ -101,6 +103,7 @@ export default function TrailersSearchInput({
           {...register('trailer_id', {required: true})}
           error={isSubmitted && !selectedId ? 'Trailer is required' : undefined}
           placeholder='Search for trailer...'
+          disabled={disabled}
           value={inputValue}
           onChange={event => {
             const value = event.currentTarget.value;

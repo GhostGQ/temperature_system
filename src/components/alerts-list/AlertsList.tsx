@@ -7,7 +7,7 @@ const AlertsList = () => {
 
   setTimeout(() => {
     refetch();
-  }, 1000 * 60);
+  }, 1000 * 20);
 
   return (
     <Box className='grid gap-4 grid-cols-[repeat(auto-fit,minmax(250px,1fr))]'>

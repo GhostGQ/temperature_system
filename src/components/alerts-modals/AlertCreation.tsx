@@ -42,6 +42,7 @@ const AlertCreation = () => {
         <Box className='mb-2'>
           <h3 className='font-semibold'>Trailer</h3>
           <TrailersSearchInput
+            disabled={false}
             trailers={trailers}
             isLoading={isLoading}
             search={search}

@@ -1,6 +1,7 @@
 import {
   Badge,
   Box,
+  Button,
   Card,
   Divider,
   Grid,
@@ -17,12 +18,13 @@ import {
   FaExclamationCircle,
   FaTemperatureHigh,
 } from 'react-icons/fa';
-import {useLocation} from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router-dom';
 import {useMediaQuery} from '@mantine/hooks';
 import {getTargetTemp} from '../../shared/utils';
 import {InfoItem} from './InfoItem';
 
 const AlertInfo = () => {
+  const navigate = useNavigate()
   const location = useLocation();
   const alertData = location.state || {};
   const theme = useMantineTheme();
@@ -221,6 +223,10 @@ const AlertInfo = () => {
             </Stack>
           </Grid.Col>
         </Grid>
+        <Divider />
+        <Button variant='default' className='mt-3' onClick={() => navigate('/')}>
+          Go to dashboard
+        </Button>
       </Card>
     </Box>
   );

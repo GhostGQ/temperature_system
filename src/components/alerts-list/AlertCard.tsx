@@ -3,7 +3,7 @@ import {TbTemperatureFahrenheit} from 'react-icons/tb';
 import {GoDotFill} from 'react-icons/go';
 import {FaTemperatureLow} from 'react-icons/fa';
 import {useNavigate} from 'react-router-dom';
-import {getTargetTemp} from '../../shared/utils';
+import {getActualTemperatureColor, getTargetTemp} from '../../shared/utils';
 
 interface AlertCardProps {
   alert: any;
@@ -18,6 +18,12 @@ export const AlertCard = ({alert}: AlertCardProps) => {
     alert.allowed_positive_error,
     alert.current_temperature
   );
+
+  const range = getActualTemperatureColor(alert.current_temperature, {
+    min: alert.allowed_temperature - alert.allowed_negative_error,
+    max: alert.allowed_temperature + alert.allowed_positive_error,
+  });
+
   const handleClick = () => {
     navigate(`/alerts/${alert.truck_name}`, {state: alert});
   };
@@ -40,7 +46,7 @@ export const AlertCard = ({alert}: AlertCardProps) => {
       </div>
 
       <div className='flex justify-between gap-4 mt-2'>
-        <div className='border p-2'>
+        <div className='border-2 p-2 rounded-md'>
           <span className='flex gap-2 items-center text-[17px] font-semibold'>
             Target <FaTemperatureLow size={20} />
           </span>
@@ -48,7 +54,7 @@ export const AlertCard = ({alert}: AlertCardProps) => {
             {targetTemp} <TbTemperatureFahrenheit size={20} />
           </span>
         </div>
-        <div className='border p-2'>
+        <div className={`border-2 p-2 border-[${range.color}] rounded-md`}>
           <span className='flex gap-2 items-center text-[17px] font-semibold'>
             Actual <FaTemperatureLow size={20} />
           </span>

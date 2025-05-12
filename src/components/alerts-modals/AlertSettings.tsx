@@ -46,10 +46,10 @@ const AlertSettings = ({
       setSearch(alert?.trailer?.name ?? '');
       setIsActive(alert?.is_active ?? false);
       reset({
-        trailer_id: alert?.trailer?.id ?? null,
-        allowed_temperature: Math.ceil(alert?.allowed_temperature) ?? 0,
-        allowed_positive_error: Math.ceil(alert?.allowed_positive_error) ?? 0,
-        allowed_negative_error: Math.ceil(alert?.allowed_negative_error) ?? 0,
+        trailer_id: alert?.trailer?.id,
+        allowed_temperature: Math.ceil(alert?.allowed_temperature),
+        allowed_positive_error: Math.ceil(alert?.allowed_positive_error),
+        allowed_negative_error: Math.ceil(alert?.allowed_negative_error),
         is_active: alert?.is_active ?? false,
         truck_name: alert?.truck_name ?? '',
       });
@@ -58,7 +58,6 @@ const AlertSettings = ({
 
   const onSubmit = async (data: AlertPost) => {
     if (!alert) return;
-
     if (isDirty) {
       await editAlert.mutate(
         {
@@ -107,6 +106,7 @@ const AlertSettings = ({
           <Box className='mb-2'>
             <h3 className='font-semibold'>Trailer</h3>
             <TrailersSearchInput
+              disabled={true}
               trailers={trailers}
               isLoading={isLoading}
               search={search}
@@ -177,11 +177,13 @@ const AlertSettings = ({
           <Group justify='space-between' className='mt-4'>
             <span className='text-md font-semibold'>Is Active</span>
             <Switch
-              {...register('is_active')}
+              {...register('is_active', {
+                onChange: event => setIsActive(event.currentTarget.checked),
+              })}
               checked={isActive}
-              onChange={event => {
-                setIsActive(event.currentTarget.checked);
-              }}
+              // onChange={event => {
+              //   setIsActive(event.currentTarget.checked);
+              // }}
               width={'100%'}
               size='lg'
               onLabel='ON'
