@@ -5,6 +5,7 @@ import {AiFillEdit} from 'react-icons/ai';
 import {MdDelete} from 'react-icons/md';
 import {useDisclosure} from '@mantine/hooks';
 import {useState} from 'react';
+import {requestStatusNotify} from '../../shared/utils';
 
 interface AlertsListProps {
   setQueryAlertId: (id: number | null) => void;
@@ -21,8 +22,10 @@ const AlertsList = ({setQueryAlertId}: AlertsListProps) => {
     setAlertId(id);
   };
 
-  const handleDelete = () => {
-    deleteAlert.mutate(alertId);
+  const handleDelete = async () => {
+    await deleteAlert.mutate(alertId);
+
+    requestStatusNotify('Alert deleted!', 'success');
     close();
   };
 

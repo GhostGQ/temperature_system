@@ -20,11 +20,11 @@ import {
 } from 'react-icons/fa';
 import {useLocation, useNavigate} from 'react-router-dom';
 import {useMediaQuery} from '@mantine/hooks';
-import {getTargetTemp} from '../../shared/utils';
 import {InfoItem} from './InfoItem';
+import {getTemperatureStatus} from '../../shared/utils';
 
 const AlertInfo = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const location = useLocation();
   const alertData = location.state || {};
   const theme = useMantineTheme();
@@ -40,14 +40,12 @@ const AlertInfo = () => {
     allowedTemp + (alertData.allowed_positive_error || 0)
   );
 
-  const tempStatus = getTargetTemp(
-    alertData.allowed_negative_error,
+  const tempStatus = getTemperatureStatus(
+    currentTemp,
     allowedTemp,
-    alertData.allowed_positive_error,
-    currentTemp
+    alertData.allowed_negative_error || 0,
+    alertData.allowed_positive_error || 0
   );
-
-  const isActiveAlert = alertData.is_triggered && tempStatus.isDanger;
 
   return (
     <Box
@@ -72,8 +70,10 @@ const AlertInfo = () => {
           p={isMobile ? 'sm' : 'md'}
           radius={0}
           style={{
-            backgroundColor: isActiveAlert
+            backgroundColor: tempStatus.isCritical
               ? theme.colors.red[6]
+              : tempStatus.isWarning
+              ? theme.colors.orange[6]
               : theme.colors.gray[6],
             color: 'white',
           }}
@@ -82,20 +82,19 @@ const AlertInfo = () => {
             <FaExclamationCircle size={isMobile ? 20 : 24} />
             <Box style={{flex: 1}}>
               <Text size={isMobile ? 'md' : 'xl'} fw={700} lineClamp={1}>
-                ALERT #{alertData.id} - TEMPERATURE{' '}
-                {isActiveAlert ? 'THRESHOLD EXCEEDED' : 'NORMAL'}
+                ALERT #{alertData.id} - TEMPERATURE {tempStatus.status}
               </Text>
               <Text size={isMobile ? 'xs' : 'sm'}>
-                {isActiveAlert ? 'Triggered' : 'Last check'}:{' '}
+                {tempStatus.isCritical ? 'Triggered' : 'Last check'}:{' '}
                 {new Date(alertData.temperature_time).toLocaleString()}
               </Text>
             </Box>
             <Badge
               variant='filled'
-              color={isActiveAlert ? 'red' : 'gray'}
+              color={tempStatus.color}
               size={isMobile ? 'md' : 'lg'}
             >
-              {isActiveAlert ? 'CRITICAL' : 'INACTIVE'}
+              {tempStatus.status}
             </Badge>
           </Group>
         </Paper>
@@ -149,7 +148,7 @@ const AlertInfo = () => {
               <InfoItem
                 label='Current Temperature'
                 value={`${currentTemp}°F`}
-                isCritical={isActiveAlert}
+                isCritical={tempStatus.isCritical}
               />
               <InfoItem
                 label='Allowed Temperature'
@@ -158,9 +157,12 @@ const AlertInfo = () => {
               <InfoItem
                 label='Temperature Delta'
                 value={`${delta > 0 ? '+' : ''}${delta}°F`}
-                isCritical={isActiveAlert}
+                isCritical={tempStatus.isCritical}
               />
-              <InfoItem label='Allowed Range' value={tempStatus.text + '°F'} />
+              <InfoItem
+                label='Allowed Range'
+                value={`${minTemp}°F - ${maxTemp}°F`}
+              />
 
               <Box mt='auto' pt='md'>
                 <Text size='sm' c='dimmed' mb='xs'>
@@ -170,7 +172,13 @@ const AlertInfo = () => {
                 <Box pos='relative'>
                   <Progress
                     value={100}
-                    color={isActiveAlert ? 'red.3' : 'blue.3'}
+                    color={
+                      tempStatus.isCritical
+                        ? 'red.3'
+                        : tempStatus.isWarning
+                        ? 'orange.3'
+                        : 'blue.3'
+                    }
                     size={isMobile ? 'sm' : 'xl'}
                     radius='xl'
                   />
@@ -199,8 +207,10 @@ const AlertInfo = () => {
                       top: 0,
                       height: '100%',
                       width: isMobile ? 8 : 10,
-                      backgroundColor: isActiveAlert
+                      backgroundColor: tempStatus.isCritical
                         ? 'var(--mantine-color-red-6)'
+                        : tempStatus.isWarning
+                        ? 'var(--mantine-color-orange-6)'
                         : 'var(--mantine-color-blue-6)',
                       borderRadius: '50%',
                       transform: `translateX(-${isMobile ? 4 : 5}px)`,
@@ -224,7 +234,11 @@ const AlertInfo = () => {
           </Grid.Col>
         </Grid>
         <Divider />
-        <Button variant='default' className='mt-3' onClick={() => navigate('/')}>
+        <Button
+          variant='default'
+          className='mt-3'
+          onClick={() => navigate('/')}
+        >
           Go to dashboard
         </Button>
       </Card>

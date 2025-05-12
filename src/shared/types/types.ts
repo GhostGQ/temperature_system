@@ -1,13 +1,15 @@
 export interface Alert {
   id: number
   trailer: Trailer
+  current_temperature: number
   allowed_temperature: number
+  temperature_time: string
   allowed_positive_error: number
   allowed_negative_error: number
-  created_by: CreatedBy
-  is_active: boolean
   truck_name: string
-  created_at: string
+  created_by: CreatedBy
+  is_triggered: boolean | null
+  delta: number | null
 }
 
 export interface Trailer {

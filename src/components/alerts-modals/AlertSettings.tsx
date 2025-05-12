@@ -17,6 +17,7 @@ import {
   type AlertPost,
 } from '../../app/services/alertService';
 import {useEffect, useState} from 'react';
+import { requestStatusNotify } from '../../shared/utils';
 
 const AlertSettings = ({
   alertId,
@@ -72,12 +73,14 @@ const AlertSettings = ({
         alert.id
       );
 
+      requestStatusNotify('Alert updated!', 'success')
       refetch();
     }
   };
 
   return (
     <Box className='bg-white shadow-lg rounded-lg p-6 w-full h-fit flex flex-col'>
+
       <div className='flex items-center justify-between'>
         <h2 className='text-2xl font-semibold '>Alert settings</h2>
         {alertId && (

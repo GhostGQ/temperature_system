@@ -1,3 +1,5 @@
+import { toast } from "react-toastify";
+
 export const getTargetTemp = (
   n: number | null,
   act: number,
@@ -36,7 +38,7 @@ export function getActualTemperatureColor(
     ? min - actualTemp
     : actualTemp - max;
 
-  if (deviation >= 1 && deviation <= 2) {
+  if (deviation >= 0 && deviation <= 2) {
     return {
       color: '#ffc107',
       emoji: '⚠️'
@@ -47,4 +49,65 @@ export function getActualTemperatureColor(
     color: '#dc3545',
     emoji: '❌'
   };
+}
+
+
+interface TemperatureStatus {
+  color: string;
+  status: string;
+  isCritical: boolean;
+  isWarning: boolean;
+}
+
+export const getTemperatureStatus = (
+  currentTemp: number,
+  allowedTemp: number,
+  negativeError: number,
+  positiveError: number
+): TemperatureStatus => {
+  const minTemp = allowedTemp - negativeError;
+  const maxTemp = allowedTemp + positiveError;
+  const deviation =
+    currentTemp < minTemp ? minTemp - currentTemp : currentTemp - maxTemp;
+
+  if (currentTemp >= minTemp && currentTemp <= maxTemp) {
+    return {
+      color: 'gray',
+      status: 'NORMAL',
+      isCritical: false,
+      isWarning: false,
+    };
+  }
+
+  if (deviation > 0 && deviation <= 2) {
+    return {
+      color: 'orange',
+      status: 'WARNING',
+      isCritical: false,
+      isWarning: true,
+    };
+  }
+
+  return {
+    color: 'red',
+    status: 'CRITICAL',
+    isCritical: true,
+    isWarning: false,
+  };
+};
+
+type statusTypes = 'success' | 'error'
+
+export const requestStatusNotify = (msg: string, type: statusTypes) => {
+  toast(msg, {
+    position: "top-center",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: false,
+    pauseOnHover: false,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+    type: type
+  })
 }

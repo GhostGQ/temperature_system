@@ -7,6 +7,7 @@ import {
 import {useState} from 'react';
 import TrailersSearchInput from '../inputs/TrailersSearchInput';
 import {useForm} from 'react-hook-form';
+import {requestStatusNotify} from '../../shared/utils';
 
 const AlertCreation = () => {
   const createAlert = useCreateAlert();
@@ -31,6 +32,7 @@ const AlertCreation = () => {
       truck_name: data.truck_name,
     });
 
+    requestStatusNotify('Alert created!', 'success');
     reset();
     setSelectedId(null);
   };

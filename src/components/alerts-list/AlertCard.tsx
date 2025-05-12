@@ -4,9 +4,10 @@ import {GoDotFill} from 'react-icons/go';
 import {FaTemperatureLow} from 'react-icons/fa';
 import {useNavigate} from 'react-router-dom';
 import {getActualTemperatureColor, getTargetTemp} from '../../shared/utils';
+import type {Alert} from '../../shared/types/types';
 
 interface AlertCardProps {
-  alert: any;
+  alert: Alert;
 }
 
 export const AlertCard = ({alert}: AlertCardProps) => {
@@ -32,12 +33,12 @@ export const AlertCard = ({alert}: AlertCardProps) => {
     <Box
       onClick={handleClick}
       key={alert.id}
-      style={{border: isDanger ? 'solid 3px red' : undefined}}
+      style={{border: isDanger ? `solid 3px ${range.color}` : undefined}}
       className='bg-white shadow-lg rounded-lg p-4 w-full h-fit flex flex-col cursor-pointer hover:shadow-2xl transition-shadow duration-300'
     >
       <div className='flex justify-between items-start'>
         <h2 className='text-xl font-semibold mb-2'>{alert.truck_name}</h2>
-        <GoDotFill size={26} color={alert.is_triggered ? 'red' : 'gray'} />
+        <GoDotFill size={26} color={range.color} />
       </div>
 
       <div className='flex justify-between gap-4'>
@@ -54,7 +55,12 @@ export const AlertCard = ({alert}: AlertCardProps) => {
             {targetTemp} <TbTemperatureFahrenheit size={20} />
           </span>
         </div>
-        <div className={`border-2 p-2 border-[${range.color}] rounded-md`}>
+        <div
+          className={`p-2 rounded-md`}
+          style={{
+            border: `2px solid ${range.color}`,
+          }}
+        >
           <span className='flex gap-2 items-center text-[17px] font-semibold'>
             Actual <FaTemperatureLow size={20} />
           </span>

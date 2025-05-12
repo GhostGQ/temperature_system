@@ -12,7 +12,7 @@ import type {UseFormRegister} from 'react-hook-form';
 import type {AlertPost} from '../../app/services/alertService';
 
 interface Props {
-  disabled: boolean
+  disabled: boolean;
   trailers: Trailer[];
   isLoading: boolean;
   search: string;
@@ -64,6 +64,10 @@ export default function TrailersSearchInput({
     setInputValue(selectedTrailer?.name || '');
     combobox.closeDropdown();
   };
+
+  useEffect(() => {
+    setInputValue('');
+  }, [isSubmitted]);
 
   useEffect(() => {
     if (selectedId) {
