@@ -30,7 +30,7 @@ const AlertsList = ({setQueryAlertId}: AlertsListProps) => {
     <Table.Tr key={element.id}>
       <Table.Td>{element.truck_name}</Table.Td>
       <Table.Td>{element.trailer.name}</Table.Td>
-      <Table.Td>{Math.ceil(element.allowed_temperature)}F</Table.Td>
+      <Table.Td>{Math.ceil(element.allowed_temperature)}°F</Table.Td>
       <Table.Td>
         <div className='flex gap-2'>
           <button

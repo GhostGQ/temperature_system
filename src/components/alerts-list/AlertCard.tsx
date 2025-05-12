@@ -53,7 +53,7 @@ export const AlertCard = ({alert}: AlertCardProps) => {
             Actual <FaTemperatureLow size={20} />
           </span>
           <span className='flex justify-center items-center'>
-            {Math.ceil(alert.current_temperature)}{' '}
+            {Math.ceil(alert.current_temperature)}
             <TbTemperatureFahrenheit size={20} />
           </span>
         </div>

@@ -119,7 +119,7 @@ const AlertSettings = ({
           </Box>
 
           <Input.Wrapper
-            label='Allowed temperature'
+            label='Allowed temperature °F'
             error={
               errors.allowed_temperature ? 'Temperature is required' : undefined
             }
@@ -134,7 +134,7 @@ const AlertSettings = ({
 
           <Group grow className='mt-2'>
             <Input.Wrapper
-              label='Positive error margin'
+              label='Positive error margin °F'
               error={
                 errors.allowed_positive_error
                   ? 'Temperature is required'
@@ -150,7 +150,7 @@ const AlertSettings = ({
             </Input.Wrapper>
 
             <Input.Wrapper
-              label='Negative error margin'
+              label='Negative error margin °F'
               error={
                 errors.allowed_negative_error
                   ? 'Temperature is required'
