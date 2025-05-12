@@ -13,6 +13,7 @@ const AlertCreation = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: {errors, isSubmitted},
   } = useForm<AlertPost>();
 
@@ -20,8 +21,8 @@ const AlertCreation = () => {
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const {data: trailers, isLoading} = useGetTrailers();
 
-  const onSubmit = (data: AlertPost) => {
-    createAlert.mutate({
+  const onSubmit = async (data: AlertPost) => {
+    await createAlert.mutate({
       trailer_id: selectedId as number,
       allowed_temperature: data.allowed_temperature,
       allowed_positive_error: data.allowed_positive_error,
@@ -29,6 +30,9 @@ const AlertCreation = () => {
       is_active: data.is_active,
       truck_name: data.truck_name,
     });
+
+    reset();
+    setSelectedId(null);
   };
 
   return (
