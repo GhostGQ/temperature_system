@@ -1,4 +1,4 @@
-import {Menu} from '@mantine/core';
+import {Button, Menu} from '@mantine/core';
 import {RxAvatar} from 'react-icons/rx';
 import {useNavigate} from 'react-router-dom';
 import {useAuthStore} from '../../app/store/authStore';
@@ -31,7 +31,9 @@ const ProfileMenu = () => {
       }}
     >
       <Menu.Target>
-        <RxAvatar size={32} cursor={'pointer'} />
+        <Button variant='transparent'>
+          <RxAvatar size={32} cursor={'pointer'} />
+        </Button>
       </Menu.Target>
 
       <Menu.Dropdown className='w-[500px]'>
