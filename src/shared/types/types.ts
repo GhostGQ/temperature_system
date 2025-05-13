@@ -9,7 +9,7 @@ export interface Alert {
   truck_name: string
   created_by: CreatedBy
   is_triggered: boolean | null
-  delta: number | null
+  delta: number
 }
 
 export interface Trailer {

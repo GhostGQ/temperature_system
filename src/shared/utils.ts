@@ -60,35 +60,25 @@ interface TemperatureStatus {
 }
 
 export const getTemperatureStatus = (
-  currentTemp: number,
-  allowedTemp: number,
-  negativeError: number,
-  positiveError: number
+  delta: number
 ): TemperatureStatus => {
-  const minTemp = allowedTemp - negativeError;
-  const maxTemp = allowedTemp + positiveError;
-  const deviation =
-    currentTemp < minTemp ? minTemp - currentTemp : currentTemp - maxTemp;
+  const deltaCeil = Math.ceil(delta)
 
-  if (currentTemp >= minTemp && currentTemp <= maxTemp) {
+  if (deltaCeil === 1 || deltaCeil === -1) {
     return {
       color: 'gray',
       status: 'NORMAL',
       isCritical: false,
       isWarning: false,
     };
-  }
-
-  if (deviation > 0 && deviation <= 2) {
+  } else if (deltaCeil < 3 && deltaCeil > -3) {
     return {
       color: 'orange',
       status: 'WARNING',
       isCritical: false,
       isWarning: true,
     };
-  }
-
-  return {
+  } else return {
     color: 'red',
     status: 'CRITICAL',
     isCritical: true,

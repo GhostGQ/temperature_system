@@ -3,7 +3,7 @@ import {TbTemperatureFahrenheit} from 'react-icons/tb';
 import {GoDotFill} from 'react-icons/go';
 import {FaTemperatureLow} from 'react-icons/fa';
 import {useNavigate} from 'react-router-dom';
-import {getActualTemperatureColor, getTargetTemp} from '../../shared/utils';
+import {getTargetTemp, getTemperatureStatus} from '../../shared/utils';
 import type {Alert} from '../../shared/types/types';
 
 interface AlertCardProps {
@@ -13,18 +13,14 @@ interface AlertCardProps {
 export const AlertCard = ({alert}: AlertCardProps) => {
   const navigate = useNavigate();
 
-  const {text: targetTemp, isDanger} = getTargetTemp(
+  const {text: targetTemp} = getTargetTemp(
     alert.allowed_negative_error,
     alert.allowed_temperature,
     alert.allowed_positive_error,
     alert.current_temperature
   );
 
-  const range = getActualTemperatureColor(alert.current_temperature, {
-    min: alert.allowed_temperature - alert.allowed_negative_error,
-    max: alert.allowed_temperature + alert.allowed_positive_error,
-  });
-
+  const tempStatus = getTemperatureStatus(alert?.delta);
   const handleClick = () => {
     navigate(`/alerts/${alert.truck_name}`, {state: alert});
   };
@@ -33,17 +29,17 @@ export const AlertCard = ({alert}: AlertCardProps) => {
     <Box
       onClick={handleClick}
       key={alert.id}
-      style={{border: isDanger ? `solid 3px ${range.color}` : undefined}}
+      style={{border: `solid 3px ${tempStatus.color}`}}
       className='bg-white shadow-lg rounded-lg p-4 w-full h-fit flex flex-col cursor-pointer hover:shadow-2xl transition-shadow duration-300'
     >
       <div className='flex justify-between items-start'>
-        <h2 className='text-xl font-semibold mb-2'>{alert.truck_name}</h2>
-        <GoDotFill size={26} color={range.color} />
+        <h2 className='text-xl font-semibold mb-2'>{alert?.trailer?.name}</h2>
+        <GoDotFill size={26} color={tempStatus.color} />
       </div>
 
       <div className='flex justify-between gap-4'>
-        <span className='text-[17px] font-semibold'>Trailer Name:</span>
-        <p className='flex items-center'>{alert?.trailer?.name}</p>
+        <span className='text-[17px] font-semibold'>Truck Name:</span>
+        <p className='flex items-center'>{alert.truck_name}</p>
       </div>
 
       <div className='flex justify-between gap-4 mt-2'>
@@ -58,7 +54,7 @@ export const AlertCard = ({alert}: AlertCardProps) => {
         <div
           className={`p-2 rounded-md`}
           style={{
-            border: `2px solid ${range.color}`,
+            border: `2px solid ${tempStatus.color}`,
           }}
         >
           <span className='flex gap-2 items-center text-[17px] font-semibold'>

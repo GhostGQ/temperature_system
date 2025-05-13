@@ -40,12 +40,7 @@ const AlertInfo = () => {
     allowedTemp + (alertData.allowed_positive_error || 0)
   );
 
-  const tempStatus = getTemperatureStatus(
-    currentTemp,
-    allowedTemp,
-    alertData.allowed_negative_error || 0,
-    alertData.allowed_positive_error || 0
-  );
+  const tempStatus = getTemperatureStatus(delta);
 
   return (
     <Box
