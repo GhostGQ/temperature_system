@@ -16,7 +16,6 @@ import {
   FaUser,
   FaCheck,
   FaExclamationTriangle,
-  FaTimes,
   FaTemperatureHigh,
   FaTruck,
   FaIdCard,
@@ -24,11 +23,12 @@ import {
 import {useMediaQuery} from '@mantine/hooks';
 import {InfoItem} from './InfoItem';
 import type {Alert} from '../../shared/types/types';
+import { MdErrorOutline } from 'react-icons/md';
 
 // Конфигурация статусов
 const STATUS_CONFIG = {
   ok: {
-    color: '',
+    color: 'green',
     icon: <FaCheck />,
     label: 'OK',
     bgColor: 'gray.6',
@@ -41,7 +41,7 @@ const STATUS_CONFIG = {
   },
   error: {
     color: 'red',
-    icon: <FaTimes />,
+    icon: <MdErrorOutline />,
     label: 'Critical',
     bgColor: 'red.6',
   },

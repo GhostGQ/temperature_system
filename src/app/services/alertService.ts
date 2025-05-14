@@ -14,6 +14,7 @@ export const useGetAlertsInfo = () => {
   return useQuery({
     queryKey: ['alertInfo'],
     queryFn: () => fetchWithBasicAuth('/dash'),
+    refetchInterval: 1000 * 10
   })
 }
 

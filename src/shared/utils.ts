@@ -1,6 +1,5 @@
 import { toast } from "react-toastify";
 
-
 interface TemperatureStatus {
   color: string;
   status: string;
@@ -53,4 +52,18 @@ export const requestStatusNotify = (msg: string, type: statusTypes) => {
     theme: "light",
     type: type
   })
+}
+
+export function formatDateTime(isoString: string): string {
+  const date = new Date(isoString);
+
+  return date.toLocaleString('en-US', {
+    month: 'numeric',    // 5
+    day: 'numeric',      // 14
+    year: 'numeric',     // 2025
+    hour: 'numeric',     // 5 (PM)
+    minute: '2-digit',   // 16
+    second: '2-digit',   // 46
+    hour12: true         // AM/PM format
+  });
 }

@@ -7,23 +7,25 @@ import {
   Divider,
   Button,
 } from '@mantine/core';
-import {FaCheck, FaExclamationTriangle, FaTimes} from 'react-icons/fa';
 import type {Alert} from '../../shared/types/types';
 import {useGetAlertsInfo} from '../../app/services/alertService';
-import {fixedNum} from '../../shared/utils';
+import {fixedNum, formatDateTime} from '../../shared/utils';
 import {useDisclosure} from '@mantine/hooks';
 import AlertInfo from '../alerts/AlertInfo';
 import {useState} from 'react';
+import {MdErrorOutline} from 'react-icons/md';
+import {LuCircleCheckBig} from 'react-icons/lu';
+import {IoWarningOutline} from 'react-icons/io5';
 
 const statusIcons = {
-  ok: <FaCheck size={20} color='green' />,
-  warning: <FaExclamationTriangle color='orange' />,
-  error: <FaTimes size={20} color='red' />,
+  ok: <LuCircleCheckBig size={18} color='green' />,
+  warning: <IoWarningOutline color='orange' />,
+  error: <MdErrorOutline size={20} color='red' />,
 };
 
 const statusColors = {
   ok: '',
-  warning: 'var(--mantine-color-orange-1)',
+  warning: 'var(--mantine-color-orange-2)',
   error: 'var(--mantine-color-red-1)',
 };
 
@@ -72,6 +74,7 @@ const Dashboard = () => {
       <Table.Td>
         <Button
           onClick={() => {
+            console.log(alert);
             setAlertData(alert);
             open();
           }}
@@ -92,7 +95,7 @@ const Dashboard = () => {
       <LoadingOverlay visible={isLoading} overlayProps={{blur: 2}} />
 
       <h2 style={{textAlign: 'center', color: '#7f8c8d'}}>
-        Temperature alerts as of {new Date().toLocaleString()}
+        Temperature alerts as of {formatDateTime(data?.time)}
       </h2>
 
       <Divider m={'16px 8px'} />
