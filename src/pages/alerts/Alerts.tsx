@@ -3,24 +3,11 @@ import AlertCreation from '../../components/alerts-modals/AlertCreation';
 import AlertsList from '../../components/alerts-modals/AlertsList';
 import AlertSettings from '../../components/alerts-modals/AlertSettings';
 import {useState} from 'react';
-import {ToastContainer} from 'react-toastify';
 
 const Alerts = () => {
   const [alertId, setAlertId] = useState<number | null>(null);
   return (
     <Box>
-      <ToastContainer
-        position='top-center'
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick={false}
-        rtl={false}
-        pauseOnFocusLoss={false}
-        draggable
-        pauseOnHover={false}
-        theme='light'
-      />
       <Grid grow gutter='xs' className='w-full h-full overflow-x-hidden px-3'>
         <Grid.Col span={4}>
           <AlertCreation />

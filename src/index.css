@@ -1,5 +1,12 @@
 @import 'tailwindcss';
 
+html,
 body {
-  @apply bg-[#91b2ee9f];
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: aliceblue;
 }

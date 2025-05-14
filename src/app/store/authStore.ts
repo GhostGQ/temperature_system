@@ -6,6 +6,8 @@ interface AuthState {
   name: string | null
   username: string
   password: string
+  authorized: boolean
+  setAuth: (authorized: boolean) => void,
   setName: (name: string) => void,
   setCredentials: (username: string, password: string) => void
   clearCredentials: () => void
@@ -17,9 +19,11 @@ export const useAuthStore = create<AuthState>()(
       username: '',
       password: '',
       name: '',
+      authorized: false,
+      setAuth: (authorized: boolean) => set({ authorized }),
       setName: (name: string) => set({ name }),
       setCredentials: (username, password) => set({ username, password }),
-      clearCredentials: () => set({ username: '', password: '', name: null }),
+      clearCredentials: () => set({ username: '', password: '', name: null, authorized: false }),
     }),
     {
       name: 'auth-storage',

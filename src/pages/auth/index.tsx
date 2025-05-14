@@ -3,6 +3,7 @@ import {useForm} from 'react-hook-form';
 import {useAuthStore} from '../../app/store/authStore';
 import {useAuthMe} from '../../app/services/authService';
 import {useNavigate} from 'react-router-dom';
+import {requestStatusNotify} from '../../shared/utils';
 
 interface AuthForm {
   username: string;
@@ -11,7 +12,7 @@ interface AuthForm {
 
 const Auth = () => {
   const navigate = useNavigate();
-  const {setCredentials, setName} = useAuthStore();
+  const {setCredentials, setName, setAuth, clearCredentials} = useAuthStore();
   const {
     register,
     handleSubmit,
@@ -23,14 +24,21 @@ const Auth = () => {
     },
   });
 
-  const {refetch, isLoading} = useAuthMe();
+  const {refetch, isFetching} = useAuthMe();
 
   const onSubmit = async (formData: AuthForm) => {
     setCredentials(formData.username, formData.password);
     refetch().then((response: any) => {
-      navigate('/alerts');
-      if (response?.data?.name) {
-        setName(response.data.name);
+      if (response?.status === 'success') {
+        requestStatusNotify('Successfuly authorized!', 'success');
+        setAuth(true);
+        navigate('/alerts');
+        if (response?.data?.name) {
+          setName(response.data.name);
+        }
+      } else {
+        requestStatusNotify('Incorrect username or password!', 'error');
+        clearCredentials();
       }
     });
   };
@@ -53,7 +61,7 @@ const Auth = () => {
             placeholder='Enter your password'
           />
           <Button
-            loading={isLoading}
+            loading={isFetching}
             type='submit'
             variant='filled'
             className='mt-2'

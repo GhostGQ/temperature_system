@@ -8,16 +8,20 @@ import NavMenu from './NavMenu';
 
 const Header = () => {
   const navigate = useNavigate();
-  const {username} = useAuthStore();
+  const {authorized} = useAuthStore();
 
   return (
-    <Box className='bg-[#efefef] shadow-lg fixed z-50 w-full h-14 flex items-center justify-between'>
-      {username && <NavMenu />}
+    <Box className='bg-[#efefef] shadow-lg fixed top-0 left-0 z-50 w-full min-h-[56px] max-h-[56px] flex items-center justify-between'>
+      {authorized && <NavMenu />}
       <div className={`flex justify-center items-center`}>
-        <img src={logo} alt='logo' className='w-[150px]' />
+        <img
+          src={logo}
+          alt='logo'
+          className='w-[150px] max-w-[150px] h-auto object-contain'
+        />
       </div>
       <div className=''>
-        {username ? (
+        {authorized ? (
           <ProfileMenu />
         ) : (
           <Button variant='transparent' onClick={() => navigate('/login')}>
