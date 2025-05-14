@@ -1,7 +1,6 @@
 import {
   Table,
   ScrollArea,
-  Group,
   Paper,
   LoadingOverlay,
   Divider,
@@ -26,13 +25,7 @@ const statusIcons = {
 const statusColors = {
   ok: '',
   warning: 'var(--mantine-color-orange-1)',
-  error: '#ffc9c9',
-};
-
-const statusLabels = {
-  ok: 'OK',
-  warning: 'Warning',
-  error: 'Critical',
+  error: 'var(--mantine-color-red-1)',
 };
 
 const Dashboard = () => {
@@ -45,11 +38,8 @@ const Dashboard = () => {
       key={alert.id}
       style={{backgroundColor: statusColors[alert.state]}}
     >
-      <Table.Td>
-        <Group gap='xs'>
-          {statusIcons[alert.state]}
-          <span>{statusLabels[alert.state]}</span>
-        </Group>
+      <Table.Td style={{textAlign: 'center'}}>
+        {statusIcons[alert.state]}
       </Table.Td>
       <Table.Td>{alert.trailer.name}</Table.Td>
       <Table.Td>{alert.truck_name}</Table.Td>
@@ -104,11 +94,11 @@ const Dashboard = () => {
         <Table highlightOnHover verticalSpacing='sm'>
           <Table.Thead>
             <Table.Tr bg={'var(--mantine-color-blue-light)'}>
-              <Table.Th w={120}>Status</Table.Th>
-              <Table.Th w={100}>Trailer</Table.Th>
+              <Table.Th w={40}>Status</Table.Th>
+              <Table.Th w={200}>Trailer</Table.Th>
               <Table.Th w={100}>Truck</Table.Th>
-              <Table.Th w={120}>Current Temp</Table.Th>
-              <Table.Th w={180}>Allowed Range</Table.Th>
+              <Table.Th w={100}>Current Temp</Table.Th>
+              <Table.Th w={110}>Allowed Range</Table.Th>
               <Table.Th w={180}>Updated</Table.Th>
               <Table.Th w={150}>Reported By</Table.Th>
               <Table.Th w={80}>Actions</Table.Th>

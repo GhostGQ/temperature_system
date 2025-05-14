@@ -4,7 +4,6 @@ import Layout from './components/layout/Layout';
 import Alerts from './pages/alerts/Alerts';
 import PrivateRoutes from './shared/lib/private-routes/PrivateRoutes';
 import Dashboard from './pages/dashboard/Dashboard';
-import AlertInfo from './pages/alerts/AlertInfo';
 
 const router = createBrowserRouter([
   {
@@ -14,10 +13,6 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Dashboard />,
-      },
-      {
-        path: '/alerts/:truckName',
-        element: <AlertInfo />,
       },
       {
         path: '/login',

@@ -2,6 +2,8 @@ import {Button, Menu} from '@mantine/core';
 import {RxAvatar} from 'react-icons/rx';
 import {useNavigate} from 'react-router-dom';
 import {useAuthStore} from '../../app/store/authStore';
+import {MdDashboard} from 'react-icons/md';
+import {IoMdSettings} from 'react-icons/io';
 
 const ProfileMenu = () => {
   const navigate = useNavigate();
@@ -37,6 +39,22 @@ const ProfileMenu = () => {
       </Menu.Target>
 
       <Menu.Dropdown className='w-[500px]'>
+        <Menu.Label>Navigation</Menu.Label>
+        <Menu.Item
+          leftSection={<MdDashboard size={14} />}
+          onClick={() => navigate('/')}
+        >
+          Dashboard
+        </Menu.Item>
+        <Menu.Item
+          leftSection={<IoMdSettings size={14} />}
+          onClick={() => navigate('/alerts')}
+        >
+          Alerts Settings
+        </Menu.Item>
+        <Menu.Divider />
+
+        <Menu.Label>Profile</Menu.Label>
         <div className='w-full flex justify-between items-start gap-2 p-2'>
           <h4 className='font-semibold'>Name: </h4>
           <span className='text-right'>{name}</span>

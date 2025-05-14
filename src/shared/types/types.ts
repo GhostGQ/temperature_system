@@ -1,10 +1,6 @@
 export interface Alert {
   id: number;
-  trailer: {
-    id: number;
-    samsara_id: number;
-    name: string;
-  };
+  trailer: Trailer;
   current_temperature: number;
   allowed_temperature: number;
   temperature_time: string;
@@ -19,4 +15,10 @@ export interface Alert {
   state: 'ok' | 'warning' | 'error';
   state_value: number;
   delta: number;
+}
+
+export interface Trailer {
+  id: number;
+  samsara_id: number;
+  name: string;
 }

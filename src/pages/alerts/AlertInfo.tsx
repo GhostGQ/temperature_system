@@ -49,8 +49,8 @@ const STATUS_CONFIG = {
 
 interface AlertInfoProps {
   opened: boolean;
-  alertData: Alert | undefined;
   close: () => void;
+  alertData: Alert | undefined;
 }
 
 const AlertInfo = ({opened, close, alertData}: AlertInfoProps) => {
