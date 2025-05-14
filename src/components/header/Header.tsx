@@ -1,5 +1,5 @@
 import {Box, Button, Image} from '@mantine/core';
-import logo from '../../shared/assets/logo.png';
+import logo from '../../shared/assets/logo.svg';
 import {IoMdLogIn} from 'react-icons/io';
 import {useAuthStore} from '../../app/store/authStore';
 import ProfileMenu from './ProfileMenu';

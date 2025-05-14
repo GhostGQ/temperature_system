@@ -25,8 +25,8 @@ const statusIcons = {
 
 const statusColors = {
   ok: '',
-  warning: 'var(--mantine-color-orange-2)',
-  error: 'var(--mantine-color-red-1)',
+  warning: 'var(--mantine-color-orange-1)',
+  error: '#ffc9c9',
 };
 
 const statusLabels = {
