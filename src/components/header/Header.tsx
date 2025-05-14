@@ -1,4 +1,4 @@
-import {Box, Button} from '@mantine/core';
+import {Box, Button, Image} from '@mantine/core';
 import logo from '../../shared/assets/logo.png';
 import {IoMdLogIn} from 'react-icons/io';
 import {useAuthStore} from '../../app/store/authStore';
@@ -14,7 +14,7 @@ const Header = () => {
     <Box className='bg-[#efefef] shadow-lg fixed top-0 left-0 z-50 w-full min-h-[56px] max-h-[56px] flex items-center justify-between'>
       {authorized && <NavMenu />}
       <div className={`flex justify-center items-center`}>
-        <img
+        <Image
           src={logo}
           alt='logo'
           className='w-[150px] max-w-[150px] h-auto object-contain'

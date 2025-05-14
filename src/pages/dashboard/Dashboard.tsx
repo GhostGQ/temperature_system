@@ -23,8 +23,8 @@ const statusIcons = {
 
 const statusColors = {
   ok: '',
-  warning: '#fef9e7',
-  error: '#f9ebea',
+  warning: 'var(--mantine-color-orange-1)',
+  error: 'var(--mantine-color-red-1)',
 };
 
 const statusLabels = {
@@ -100,7 +100,7 @@ const Dashboard = () => {
       <ScrollArea type='auto'>
         <Table highlightOnHover verticalSpacing='sm'>
           <Table.Thead>
-            <Table.Tr>
+            <Table.Tr bg={'var(--mantine-color-blue-light)'}>
               <Table.Th w={120}>Status</Table.Th>
               <Table.Th w={100}>Trailer</Table.Th>
               <Table.Th w={100}>Truck</Table.Th>
