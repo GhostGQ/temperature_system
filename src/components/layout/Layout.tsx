@@ -32,7 +32,7 @@ const Layout = () => {
         theme='light'
       />
       {/* <Header /> */}
-      <Box className='w-screen h-screen pt-12 overflow-hidden'>
+      <Box className='w-screen h-screen pt-12 overflow-x-hidden'>
         <Outlet />
       </Box>
     </Box>

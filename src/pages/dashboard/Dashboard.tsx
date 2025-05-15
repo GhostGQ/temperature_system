@@ -18,7 +18,7 @@ import {IoWarningOutline} from 'react-icons/io5';
 
 const statusIcons = {
   ok: <LuCircleCheckBig size={18} color='green' />,
-  warning: <IoWarningOutline color='orange' />,
+  warning: <IoWarningOutline size={20} color='orange' />,
   error: <MdErrorOutline size={20} color='red' />,
 };
 
@@ -79,7 +79,7 @@ const Dashboard = () => {
   ));
 
   return (
-    <Paper p='md' shadow='sm' radius='md' maw={1200} mx='auto' pos='relative'>
+    <Paper p='md' shadow='sm' radius='md' maw={1200} mx='auto' pos='relative' className='overflow-y-auto'>
       <AlertInfo opened={opened} close={close} alertData={alertData} />
 
       <LoadingOverlay visible={isLoading} overlayProps={{blur: 2}} />
@@ -91,7 +91,7 @@ const Dashboard = () => {
       <Divider m={'16px 8px'} />
 
       <ScrollArea type='auto'>
-        <Table highlightOnHover verticalSpacing='sm'>
+        <Table verticalSpacing='sm'>
           <Table.Thead>
             <Table.Tr bg={'var(--mantine-color-blue-light)'}>
               <Table.Th w={40}>Status</Table.Th>

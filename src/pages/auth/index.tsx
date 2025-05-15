@@ -24,12 +24,12 @@ const Auth = () => {
     },
   });
 
-  const {refetch, isFetching} = useAuthMe();
+  const {refetch, isLoading} = useAuthMe();
 
   const onSubmit = async (formData: AuthForm) => {
     setCredentials(formData.username, formData.password);
     refetch().then((response: any) => {
-      if (response?.status === 'success') {
+      if (response.data) {
         requestStatusNotify('Successfuly authorized!', 'success');
         setAuth(true);
         navigate('/alerts');
@@ -61,7 +61,7 @@ const Auth = () => {
             placeholder='Enter your password'
           />
           <Button
-            loading={isFetching}
+            loading={isLoading}
             type='submit'
             variant='filled'
             className='mt-2'
