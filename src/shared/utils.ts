@@ -72,6 +72,8 @@ export function formatDateTime(isoString: string): string {
 export const formatDate = (isoString: string) => {
   const date = new Date(isoString);
 
+  if (!isoString) return ''
+
   return date.toLocaleString('en-US', {
     month: 'numeric',    // 5
     day: 'numeric',      // 14

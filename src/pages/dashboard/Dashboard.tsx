@@ -62,7 +62,7 @@ const Dashboard = () => {
         {fixedNum(alert.allowed_temperature + alert.allowed_positive_error)}°F
       </Table.Td>
       <Table.Td>
-        {formatDate(alert.pickup_date)} - {formatDate(alert.delivery_date)}
+        {formatDate(alert?.pickup_date)} - {formatDate(alert?.delivery_date)}
       </Table.Td>
       <Table.Td>{formatDateTime(alert.temperature_time)}</Table.Td>
       <Table.Td>{alert.created_by.name}</Table.Td>
