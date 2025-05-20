@@ -6,6 +6,7 @@ export const useAuthMe = () => {
     queryKey: ['authMe'],
     queryFn: () => fetchWithBasicAuth('/me'),
     enabled: false,
-    refetchOnWindowFocus: false
+    refetchOnWindowFocus: false,
+    retry: false
   })
 }

@@ -8,6 +8,10 @@ export interface AlertPost {
   allowed_negative_error: number;
   is_active: boolean;
   truck_name: string;
+  load_number: string,
+  pickup_date: string,
+  delivery_date: string,
+  date_range?: [Date | null, Date | null];
 }
 
 export const useGetAlertsInfo = () => {

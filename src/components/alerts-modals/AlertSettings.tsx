@@ -4,12 +4,11 @@ import {
   Group,
   Input,
   Loader,
-  Switch,
+  Modal,
   TextInput,
 } from '@mantine/core';
 import TrailersSearchInput from '../inputs/TrailersSearchInput';
-import {RxReset} from 'react-icons/rx';
-import {useForm} from 'react-hook-form';
+import {Controller, useForm} from 'react-hook-form';
 import {
   useGetAlert,
   useGetTrailers,
@@ -17,26 +16,28 @@ import {
   type AlertPost,
 } from '../../app/services/alertService';
 import {useEffect, useState} from 'react';
-import { requestStatusNotify } from '../../shared/utils';
+import {requestStatusNotify} from '../../shared/utils';
+import {DatePickerInput} from '@mantine/dates';
 
-const AlertSettings = ({
-  alertId,
-  setAlertId,
-}: {
+interface Props {
   alertId: number | null;
-  setAlertId: (alertId: number | null) => void;
-}) => {
-  const editAlert = useUpdateAlert();
+  openEditModal: boolean;
+  setOpenEditModal: (value: boolean) => void;
+}
+
+const AlertSettings = (props: Props) => {
+  const {alertId, openEditModal, setOpenEditModal} = props;
+  const {mutate, isSuccess} = useUpdateAlert();
   const {data: alert, refetch, isFetching} = useGetAlert(alertId);
   const {
     register,
     handleSubmit,
     reset,
+    control,
     formState: {errors, isSubmitted, isDirty},
-  } = useForm<AlertPost>({defaultValues: alert});
+  } = useForm<AlertPost>();
 
   const [search, setSearch] = useState('');
-  const [isActive, setIsActive] = useState(false);
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const {data: trailers, isLoading} = useGetTrailers();
 
@@ -45,64 +46,65 @@ const AlertSettings = ({
       refetch();
       setSelectedId(alert?.trailer?.id ?? null);
       setSearch(alert?.trailer?.name ?? '');
-      setIsActive(alert?.is_active ?? false);
       reset({
         trailer_id: alert?.trailer?.id,
         allowed_temperature: Math.ceil(alert?.allowed_temperature),
         allowed_positive_error: Math.ceil(alert?.allowed_positive_error),
         allowed_negative_error: Math.ceil(alert?.allowed_negative_error),
-        is_active: alert?.is_active ?? false,
         truck_name: alert?.truck_name ?? '',
+        load_number: alert?.load_number ?? '',
+        date_range: [alert?.pickup_date, alert?.delivery_date],
       });
     }
-  }, [alertId, alert, refetch, reset]);
+  }, [alertId, alert, reset]);
 
   const onSubmit = async (data: AlertPost) => {
     if (!alert) return;
-    if (isDirty) {
-      await editAlert.mutate(
-        {
-          id: alert.id,
-          trailer_id: selectedId as number,
-          allowed_temperature: data.allowed_temperature,
-          allowed_positive_error: data.allowed_positive_error,
-          allowed_negative_error: data.allowed_negative_error,
-          is_active: data.is_active,
-          truck_name: data.truck_name,
-        },
-        alert.id
-      );
-
-      requestStatusNotify('Alert updated!', 'success')
-      refetch();
-    }
+    mutate(
+      {
+        id: alert.id,
+        trailer_id: selectedId as number,
+        allowed_temperature: data.allowed_temperature,
+        allowed_positive_error: data.allowed_positive_error,
+        allowed_negative_error: data.allowed_negative_error,
+        is_active: alert.is_active,
+        truck_name: data.truck_name,
+        load_number: data.load_number,
+        pickup_date: String(data?.date_range?.[0] ?? ''),
+        delivery_date: String(data?.date_range?.[1] ?? ''),
+      },
+      alert.id
+    );
   };
 
-  return (
-    <Box className='bg-white shadow-lg rounded-lg p-6 w-full h-fit flex flex-col'>
+  useEffect(() => {
+    if (isSuccess) {
+      requestStatusNotify('Alert updated!', 'success');
+      setOpenEditModal(false);
+    }
+  }, [isSuccess]);
 
+  return (
+    <Modal
+      opened={openEditModal}
+      key={alertId}
+      onClose={() => setOpenEditModal(false)}
+      centered
+      size='lg'
+      radius='lg'
+      className='bg-white shadow-lg rounded-lg flex flex-col'
+      styles={{body: {paddingInline: '24px', paddingBottom: '24px'}}}
+    >
       <div className='flex items-center justify-between'>
         <h2 className='text-2xl font-semibold '>Alert settings</h2>
-        {alertId && (
-          <RxReset
-            size={22}
-            cursor={'pointer'}
-            title='Reset'
-            onClick={() => setAlertId(null)}
-          />
-        )}
       </div>
-      {!alertId ? (
-        <Box className='w-full h-[376px] flex items-center justify-center'>
-          <h2 className='text-2xl font-semibold'>Select an alert</h2>
-        </Box>
-      ) : isFetching ? (
+      {isFetching ? (
         <Box className='w-full h-[376px] flex items-center justify-center'>
           <Loader />
         </Box>
       ) : (
         <Box
-          className='mt-4'
+          className='mt-4 flex flex-col gap-2'
           component='form'
           onSubmit={handleSubmit(onSubmit)}
         >
@@ -169,37 +171,59 @@ const AlertSettings = ({
             </Input.Wrapper>
           </Group>
 
-          <TextInput
-            {...register('truck_name', {required: true})}
-            error={errors.truck_name ? 'Truck name is required' : undefined}
-            className='mt-2'
-            label='Track Name'
-            placeholder='Enter track name'
-          />
-
-          <Group justify='space-between' className='mt-4'>
-            <span className='text-md font-semibold'>Is Active</span>
-            <Switch
-              {...register('is_active', {
-                onChange: event => setIsActive(event.currentTarget.checked),
-              })}
-              checked={isActive}
-              // onChange={event => {
-              //   setIsActive(event.currentTarget.checked);
-              // }}
-              width={'100%'}
-              size='lg'
-              onLabel='ON'
-              offLabel='OFF'
+          <Group grow className='mt-2'>
+            <TextInput
+              {...register('truck_name', {required: true})}
+              error={errors.truck_name ? 'Truck name is required' : undefined}
+              label='Truck Name'
+              placeholder='Enter truck name'
+            />
+            <TextInput
+              {...register('load_number', {required: true})}
+              error={errors.load_number ? 'Load number is required' : undefined}
+              label='Load Number'
+              placeholder='Enter load number'
             />
           </Group>
 
-          <Button type='submit' fullWidth className='mt-3' radius={'md'}>
+          <Controller
+            control={control}
+            name='date_range'
+            rules={{
+              validate: value =>
+                value && value[0] && value[1]
+                  ? true
+                  : 'Pick up and delivery date is required',
+            }}
+            render={({field}) => (
+              <DatePickerInput
+                type='range'
+                label='Pick up and delivery date'
+                placeholder='Pick dates range'
+                valueFormat='YYYY-MMM-DD'
+                className='mt-2'
+                value={field.value}
+                onChange={field.onChange}
+                error={errors.date_range?.message}
+              />
+            )}
+          />
+
+          <Button
+            disabled={!isDirty}
+            type='submit'
+            fullWidth
+            className='mt-4'
+            radius={'md'}
+          >
             Update Alert
           </Button>
+          {isSubmitted && !isDirty ? (
+            <p className='text-center text-red-500'>Nothing Changed!</p>
+          ) : null}
         </Box>
       )}
-    </Box>
+    </Modal>
   );
 };
 

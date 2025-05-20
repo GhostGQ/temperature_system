@@ -10,7 +10,7 @@ const Layout = () => {
   const {authorized} = useAuthStore();
   return (
     <Box className='relative'>
-      <div className='absolute top-2 right-0'>
+      <div className='fixed top-2 right-0'>
         {authorized ? (
           <ProfileMenu />
         ) : (

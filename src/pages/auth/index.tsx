@@ -28,19 +28,40 @@ const Auth = () => {
 
   const onSubmit = async (formData: AuthForm) => {
     setCredentials(formData.username, formData.password);
-    refetch().then((response: any) => {
-      if (response.data) {
-        requestStatusNotify('Successfuly authorized!', 'success');
+
+    try {
+      const result = await refetch();
+      if (result.isSuccess) {
+        requestStatusNotify('Login successful!', 'success');
+        if (result?.data?.name) {
+          setName(result.data.name);
+        }
         setAuth(true);
         navigate('/alerts');
-        if (response?.data?.name) {
-          setName(response.data.name);
+      } else if (result.error) {
+        const message = (result.error as Error).message;
+
+        const statusMatch = message.match(/(\d{3})/);
+        const status = statusMatch ? parseInt(statusMatch[1]) : null;
+
+        if (status === 401) {
+          requestStatusNotify('Incorrect username or password', 'error');
+          clearCredentials();
+        } else if (status === 500) {
+          requestStatusNotify('Server error', 'error');
+          clearCredentials();
+        } else if (!status) {
+          requestStatusNotify('No connection to the server', 'error');
+          clearCredentials();
+        } else {
+          requestStatusNotify(`Unknown error: ${status}`, 'error');
+          clearCredentials();
         }
-      } else {
-        requestStatusNotify('Incorrect username or password!', 'error');
-        clearCredentials();
       }
-    });
+    } catch (err) {
+      requestStatusNotify('An unexpected error occurred', 'error');
+      clearCredentials();
+    }
   };
 
   return (

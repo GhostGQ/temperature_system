@@ -35,7 +35,8 @@ export const getTemperatureStatus = (
 };
 
 export const fixedNum = (num: number) => {
-  return num.toFixed(1)
+  const number: number = Number(num.toFixed(1))
+  return number
 }
 
 type statusTypes = 'success' | 'error'
@@ -65,5 +66,15 @@ export function formatDateTime(isoString: string): string {
     minute: '2-digit',   // 16
     second: '2-digit',   // 46
     hour12: true         // AM/PM format
+  });
+}
+
+export const formatDate = (isoString: string) => {
+  const date = new Date(isoString);
+
+  return date.toLocaleString('en-US', {
+    month: 'numeric',    // 5
+    day: 'numeric',      // 14
+    year: 'numeric',     // 2025
   });
 }

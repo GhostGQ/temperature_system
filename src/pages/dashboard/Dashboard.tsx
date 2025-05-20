@@ -8,7 +8,7 @@ import {
 } from '@mantine/core';
 import type {Alert} from '../../shared/types/types';
 import {useGetAlertsInfo} from '../../app/services/alertService';
-import {fixedNum, formatDateTime} from '../../shared/utils';
+import {fixedNum, formatDate, formatDateTime} from '../../shared/utils';
 import {useDisclosure} from '@mantine/hooks';
 import AlertInfo from '../alerts/AlertInfo';
 import {useState} from 'react';
@@ -42,7 +42,9 @@ const Dashboard = () => {
         {statusIcons[alert.state]}
       </Table.Td>
       <Table.Td>{alert.trailer.name}</Table.Td>
-      <Table.Td>{alert.truck_name}</Table.Td>
+      <Table.Td>
+        {alert.truck_name} | {alert.load_number}
+      </Table.Td>
       <Table.Td
         style={{
           color:
@@ -59,7 +61,10 @@ const Dashboard = () => {
         {fixedNum(alert.allowed_temperature - alert.allowed_negative_error)}°F -{' '}
         {fixedNum(alert.allowed_temperature + alert.allowed_positive_error)}°F
       </Table.Td>
-      <Table.Td>{new Date(alert.temperature_time).toLocaleString()}</Table.Td>
+      <Table.Td>
+        {formatDate(alert.pickup_date)} - {formatDate(alert.delivery_date)}
+      </Table.Td>
+      <Table.Td>{formatDateTime(alert.temperature_time)}</Table.Td>
       <Table.Td>{alert.created_by.name}</Table.Td>
       <Table.Td>
         <Button
@@ -79,7 +84,15 @@ const Dashboard = () => {
   ));
 
   return (
-    <Paper p='md' shadow='sm' radius='md' maw={1200} mx='auto' pos='relative' className='overflow-y-auto'>
+    <Paper
+      p='md'
+      shadow='sm'
+      radius='md'
+      maw={1500}
+      mx='auto'
+      pos='relative'
+      className='overflow-y-auto'
+    >
       <AlertInfo opened={opened} close={close} alertData={alertData} />
 
       <LoadingOverlay visible={isLoading} overlayProps={{blur: 2}} />
@@ -96,10 +109,11 @@ const Dashboard = () => {
             <Table.Tr bg={'var(--mantine-color-blue-light)'}>
               <Table.Th w={40}>Status</Table.Th>
               <Table.Th w={200}>Trailer</Table.Th>
-              <Table.Th w={100}>Truck</Table.Th>
+              <Table.Th w={120}>Truck / Load</Table.Th>
               <Table.Th w={100}>Current Temp</Table.Th>
               <Table.Th w={110}>Allowed Range</Table.Th>
-              <Table.Th w={180}>Updated</Table.Th>
+              <Table.Th w={150}>Pick up & delivery time</Table.Th>
+              <Table.Th w={160}>Updated</Table.Th>
               <Table.Th w={150}>Reported By</Table.Th>
               <Table.Th w={80}>Actions</Table.Th>
             </Table.Tr>
