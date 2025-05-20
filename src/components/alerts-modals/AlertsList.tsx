@@ -82,7 +82,7 @@ const AlertsList = ({
         <Table withColumnBorders className='h-full'>
           <Table.Thead>
             <Table.Tr>
-              <Table.Th>Truck</Table.Th>
+              <Table.Th>Truck / Load</Table.Th>
               <Table.Th>Trailer</Table.Th>
               <Table.Th>Allowed Temp</Table.Th>
               <Table.Th>Pickup & delivery dates</Table.Th>

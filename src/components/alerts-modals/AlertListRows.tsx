@@ -24,7 +24,9 @@ const AlertListRows = ({alert, handleOpen, handleEditModalOpen}: Props) => {
 
   return (
     <Table.Tr key={alert.id} style={{height: '50px'}}>
-      <Table.Td>{alert.truck_name}</Table.Td>
+      <Table.Td>
+        {alert.truck_name} | {alert.load_number}
+      </Table.Td>
       <Table.Td>{alert.trailer.name}</Table.Td>
       <Table.Td>{Math.ceil(alert.allowed_temperature)}°F</Table.Td>
       <Table.Td>
